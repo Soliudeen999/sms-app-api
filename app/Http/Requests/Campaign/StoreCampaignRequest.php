@@ -8,7 +8,6 @@ use App\Models\Campaign;
 use App\Rules\IsPhoneNumber;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 
 class StoreCampaignRequest extends FormRequest
 {
