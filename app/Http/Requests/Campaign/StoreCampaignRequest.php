@@ -4,6 +4,7 @@ namespace App\Http\Requests\Campaign;
 
 use App\Enums\Campaign\CampaignRecipientType;
 use App\Enums\Message\MessageType;
+use App\Models\Campaign;
 use App\Rules\IsPhoneNumber;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,7 +29,19 @@ class StoreCampaignRequest extends FormRequest
     {
         $rules = [
             'title' => ['sometimes', 'string', 'min:3', 'max:255'],
-            'body' => ['required', 'min:3', 'max:1000'],
+            'body' => ['required', 'min:3', 'max:1000', function ($attribute, $value, $fail) {
+                $duplicate = Campaign::query()
+                    ->where('body', $value)
+                    ->where('user_id', auth()->id())
+                    ->where('type', $this->input('type'))
+                    ->where('created_at', '>=', now()->subMinutes(2))
+                    ->exists();
+
+                if ($duplicate) {
+                    $fail('You created a similar campaign less than 2 minutes ago.');
+                }
+            }],
+
             'type' => ['required', new EnumValue(MessageType::class)],
             'recipient_type' => ['required', new EnumValue(CampaignRecipientType::class)],
             'recipients' => ['required', 'array'],
