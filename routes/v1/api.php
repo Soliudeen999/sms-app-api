@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::put('/me/logout', [UserController::class, 'logout'])->name('logout');
-Route::apiSingleton('/me', UserController::class)->middleware('cacheResponse:1000,me');;
+Route::apiSingleton('/me', UserController::class);
 
 Route::as('verify')->middleware('throttle:authentication')->group(function (): void {
     Route::post('/verify-email', [AuthController::class, 'verifyEmail'])->name('check');
@@ -20,6 +20,6 @@ Route::as('verify')->middleware('throttle:authentication')->group(function (): v
 // Verified Users Only Access
 Route::middleware(['verified'])->group(function (): void {
     Route::get('/campaigns/{campaign}/messages', [CampaignController::class, 'campaignMessages'])->name('campaigns.messages');
-    Route::apiResource('/campaigns', CampaignController::class)->middleware('cacheResponse:300,campaigns');;
-    Route::apiResource('/contacts', ContactController::class)->middleware('cacheResponse:300,contacts');;
+    Route::apiResource('/campaigns', CampaignController::class);
+    Route::apiResource('/contacts', ContactController::class);
 });
