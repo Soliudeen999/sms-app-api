@@ -11,6 +11,13 @@ It integrates multiple SMS gateways (Dotgo, 2FroComs, Africa’s Talking, etc.) 
 
 This API-only project is designed for scalability, performance, and clean architecture.
 
+## NB: SMS SERVICES credential.
+
+The default sms service provider hardcoded is 2frocoms. You can register to get the api keys needed to run the system.
+
+-   (2frocoms) https://2frocoms.com/
+-   (dotgo) https://www.dotgo.com/
+
 ---
 
 ## 📘 Features
@@ -131,6 +138,12 @@ Or via Artisan
 
 ```bash
 php artisan serve
+```
+
+Start the Queue worker (Processing of sms is via queue)
+
+```bash
+php artisan queue:listen
 ```
 
 ## 🔑 Authentication Flow (Sanctum)

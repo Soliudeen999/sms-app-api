@@ -15,7 +15,9 @@ trait HasFilter
     private array $allowedComparisonOperators = ['gt', 'lt', 'eq', 'btw', 'in', 'neq', 'gte', 'lte'];
 
     private array $dbConnectionsThatSupportsWhereJsonContains = [
-        'mysql', 'mariadb', 'pgsql'
+        'mysql',
+        'mariadb',
+        'pgsql'
     ];
 
     public function scopeFilter(Builder $query, ?array $filters = null): Builder
@@ -90,10 +92,10 @@ trait HasFilter
                         /**
                          * This may be json field filtering
                          */
-                        if(count($related) >= 2 && $related[0] == 'json') {
+                        if (count($related) >= 2 && $related[0] == 'json') {
                             $connectionName = DB::connection()->getDriverName();
 
-                            if(!in_array($connectionName, $this->dbConnectionsThatSupportsWhereJsonContains)){
+                            if (!in_array($connectionName, $this->dbConnectionsThatSupportsWhereJsonContains)) {
                                 throw new Exception("WhereJsonContains is not supported by the current database driver. Current driver: {$connectionName}");
                             }
 
@@ -114,7 +116,7 @@ trait HasFilter
                             throw new Exception("Invalid Model Relationship {$relationship} specified for column {$column} in model {$modelName}");
                         }
 
-                        $query->whereHas($relationship, fn ($query) => $query->where($table.$column, $value));
+                        $query->whereHas($relationship, fn($query) => $query->where($table . $column, $value));
                     }
 
                     $query->where($column, $value);
